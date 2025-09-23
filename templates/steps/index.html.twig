@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Steps index{% endblock %}
+
+{% block body %}
+    <h1>Steps index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>M1_x</th>
+                <th>M1_y</th>
+                <th>M1_toe</th>
+                <th>M1_heel</th>
+                <th>M1_rotate</th>
+                <th>M2_x</th>
+                <th>M2_y</th>
+                <th>M2_toe</th>
+                <th>M2_heel</th>
+                <th>M2_rotate</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for step in steps %}
+            <tr>
+                <td>{{ step.id }}</td>
+                <td>{{ step.m1X }}</td>
+                <td>{{ step.m1Y }}</td>
+                <td>{{ step.m1Toe ? 'Yes' : 'No' }}</td>
+                <td>{{ step.m1Heel ? 'Yes' : 'No' }}</td>
+                <td>{{ step.m1Rotate }}</td>
+                <td>{{ step.m2X }}</td>
+                <td>{{ step.m2Y }}</td>
+                <td>{{ step.m2Toe ? 'Yes' : 'No' }}</td>
+                <td>{{ step.m2Heel ? 'Yes' : 'No' }}</td>
+                <td>{{ step.m2Rotate }}</td>
+                <td>
+                    <a href="{{ path('app_steps_show', {'id': step.id}) }}">show</a>
+                    <a href="{{ path('app_steps_edit', {'id': step.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_steps_new') }}">Create new</a>
+{% endblock %}

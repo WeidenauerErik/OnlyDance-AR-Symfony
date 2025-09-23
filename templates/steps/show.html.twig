@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Steps{% endblock %}
+
+{% block body %}
+    <h1>Steps</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ step.id }}</td>
+            </tr>
+            <tr>
+                <th>M1_x</th>
+                <td>{{ step.m1X }}</td>
+            </tr>
+            <tr>
+                <th>M1_y</th>
+                <td>{{ step.m1Y }}</td>
+            </tr>
+            <tr>
+                <th>M1_toe</th>
+                <td>{{ step.m1Toe ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>M1_heel</th>
+                <td>{{ step.m1Heel ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>M1_rotate</th>
+                <td>{{ step.m1Rotate }}</td>
+            </tr>
+            <tr>
+                <th>M2_x</th>
+                <td>{{ step.m2X }}</td>
+            </tr>
+            <tr>
+                <th>M2_y</th>
+                <td>{{ step.m2Y }}</td>
+            </tr>
+            <tr>
+                <th>M2_toe</th>
+                <td>{{ step.m2Toe ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>M2_heel</th>
+                <td>{{ step.m2Heel ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>M2_rotate</th>
+                <td>{{ step.m2Rotate }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_steps_index') }}">back to list</a>
+
+    <a href="{{ path('app_steps_edit', {'id': step.id}) }}">edit</a>
+
+    {{ include('steps/_delete_form.html.twig') }}
+{% endblock %}
