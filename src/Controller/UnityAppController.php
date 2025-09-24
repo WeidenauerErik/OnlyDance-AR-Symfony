@@ -34,7 +34,7 @@ final class UnityAppController extends AbstractController
     public function getDanceById(int $danceId, StepsRepository $stepsRepository): JsonResponse
     {
         $steps = $stepsRepository->findBy(['dance_id' => $danceId]);
-        
+
         $data = array_map(function ($step) {
             return [
                 'id' => $step->getId(),
