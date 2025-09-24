@@ -15,8 +15,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final class UnityAppController extends AbstractController
 {
-    #[Route('/mainMenu/getAllDances', name: 'app_mainMenu_getAllDances', methods: ['GET'])]
-    public function getAllDances(DanceRepository $danceRepository): JsonResponse
+    #[Route('/getFiveDances', name: 'app_mainMenu_getFiveDances', methods: ['GET'])]
+    public function getFiveDances(DanceRepository $danceRepository): JsonResponse
     {
         $dances = $danceRepository->findBy([], ['id' => 'ASC'], 5);
 
@@ -30,7 +30,22 @@ final class UnityAppController extends AbstractController
         return new JsonResponse($data);
     }
 
-    #[Route('/danceAnimator/getDanceById/{danceId}', name: 'dance_animator_getDanceById', methods: ['GET'])]
+    #[Route('/getAllDances', name: 'app_mainMenu_getAllDances', methods: ['GET'])]
+    public function getAllDances(DanceRepository $danceRepository): JsonResponse
+    {
+        $dances = $danceRepository->findAll();
+
+        $data = array_map(function ($dance) {
+            return [
+                'id' => $dance->getId(),
+                'name' => $dance->getName(),
+            ];
+        }, $dances);
+
+        return new JsonResponse($data);
+    }
+
+    #[Route('/getDanceById/{danceId}', name: 'dance_animator_getDanceById', methods: ['GET'])]
     public function getDanceById(int $danceId, StepsRepository $stepsRepository): JsonResponse
     {
         $steps = $stepsRepository->findBy(['dance_id' => $danceId]);
