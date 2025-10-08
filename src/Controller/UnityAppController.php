@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-#[Route('backend')]
 final class UnityAppController extends AbstractController
 {
     #[Route('/getFiveDances', name: 'app_mainMenu_getFiveDances', methods: ['GET'])]
