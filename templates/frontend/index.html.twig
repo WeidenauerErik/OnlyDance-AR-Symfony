@@ -1,0 +1,183 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello FrontendController!{% endblock %}
+
+{% block body %}
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
+
+        body {
+            font-family: Montserrat, sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            font-style: normal;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        nav ul li {
+            margin: 0 1rem;
+        }
+
+        nav ul li a {
+            font-family: Montserrat, sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            color: white;
+            text-decoration: none;
+
+        }
+
+        nav ul li a:hover {
+            text-decoration: underline;
+        }
+
+        section {
+            padding: 0.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1, h2, h3 {
+            font-family: Montserrat, sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 600;
+            font-style: normal;
+            color: #333;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 2rem;
+        }
+
+        footer a {
+            font-family: Montserrat, sans-serif;
+            font-optical-sizing: auto;
+            font-weight: 400;
+            color: #ddd;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+
+        @media (max-width: 600px) {
+            nav ul {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            nav ul li {
+                margin: 0.5rem 0;
+            }
+
+            section {
+                padding: 1rem;
+            }
+
+
+        }
+    </style>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="#projektbeschreibung">Projektbeschreibung</a></li>
+                <li><a href="#ziele">Ziele</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#impressum">Impressum</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="projektbeschreibung">
+
+        <h1>Diplomarbeit - OnlyDance</h1>
+        <h2>Projektbeschreibung</h2>
+        <p>OnlyDance bietet die Möglichkeit, Grundschritte für Standardtänze zu erlernen. Unterstützt wird dieses
+            Grundprinzip
+            durch ein Live-Tracking System, was eine genaue Position der Füße bereitstellt, um besser kontrollieren zu
+            können,
+            ob ein Schritt richtig getätigt wurde. Um mehr Aufmerksamkeit auf dieses Projekt zu wecken wird der Prozess
+            des
+            Arbeitens dokumentiert und auf Social Media Plattformen veröffentlicht.
+        </p>
+    </section>
+
+
+    <section id="ziele">
+        <h2>Hauptziele</h2>
+        <h3>AR-Anzeige App</h3>
+        <p>Es wird eine AR-App auf einem (Android)Smartphone entwickelt, die Tanzschritte auf dem Boden visualisiert.
+            Nutzerinnen und Nutzer können diese Schrittfolgen sehen und direkt nachtanzen.
+            Die visuelle Darstellung soll das Erlernen neuer Schrittfolgen erleichtern und die Orientierung
+            im Raum verbessern.
+        </p>
+
+        <h3>Live-Tracking System</h3>
+        <p>Eine Vorstudie wird als erstes durchgeführt, um die verschiedenen Technologien und Umsetzungsmöglichkeiten
+            zu erforschen. Daraus soll ein technisches System realisiert werden, das die Position beider Füße des Users
+            in Echtzeit erfasst. Dadurch kann präzise aufgezeichnet werden, wo sich die Füße zu welchem Zeitpunkt
+            befanden. Diese Daten ermöglichen eine Analyse der Tanzperformance und helfen dabei zu erkennen, ob die
+            Schrittfolge korrekt ausgeführt wurde.
+        </p>
+
+        <h3>Webauftritt und Social Media</h3>
+        <p>Zur Präsentation und Verbreitung des Projekts wird eine Website erstellt, auf der die App vorgestellt und zum
+            Download angeboten wird. Ergänzend dazu wird ein Instagram-Account betrieben, über den regelmäßig Updates
+            zum
+            Projekt veröffentlicht werden.
+        </p>
+
+    </section>
+
+    <section id="team">
+        <h2>Teamvorstellung</h2>
+        <p>Das Projektteam besteht aus den folgenden Mitgliedern:</p>
+        <ul>
+            <li>Andreas Juchelka - Projektleiter & Live-Tracking-System</li>
+            <li>Jakob Heftner - Stv. Projektleiter & Webauftritt und Social Media</li>
+            <li>Erik Weidenauer - Projektmitarbeiter & AR-Anzeige App</li>
+        </ul>
+    </section>
+
+    <section id="impressum">
+        <h2>Impressum</h2>
+        <p>Angaben gemäß § 5 TMG:</p>
+        <p>Andreas Juchelka<br>
+            Rennweg 89a<br>
+            Wien, 1030<br>
+            E-Mail: onlydance.rhythm@gmail.com<br>
+        </p>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 OnlyDance. Alle Rechte vorbehalten. | <a href="#impressum">Impressum</a></p>
+    </footer>
+{% endblock %}

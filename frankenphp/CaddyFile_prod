@@ -17,7 +17,7 @@
 {$CADDY_EXTRA_CONFIG}
 
 
-37396.hostserv.eu {
+onlydance.at {
     log {
         {$CADDY_SERVER_LOG_OPTIONS}
         format filter {
