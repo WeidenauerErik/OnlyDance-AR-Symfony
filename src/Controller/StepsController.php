@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('backend/steps')]
+#[Route('api/steps')]
 final class StepsController extends AbstractController
 {
     #[Route(name: 'app_steps_index', methods: ['GET'])]
