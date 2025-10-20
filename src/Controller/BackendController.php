@@ -70,8 +70,8 @@ final class BackendController extends AbstractController
         return new JsonResponse($data);
     }
 
-    #[Route('/api/checkUser', name: 'check_user', methods: ['POST'])]
-    public function checkUser(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): JsonResponse
+    #[Route('/login', name: 'login_user', methods: ['POST'])]
+    public function loginUser(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         if (!$data || !isset($data['email']) || !isset($data['password'])) {
@@ -95,8 +95,8 @@ final class BackendController extends AbstractController
         return new JsonResponse(['success' => false, 'error' => 'E-Mail oder Passwort ist falsch!'], 401);
     }
 
-    #[Route('/api/register', name: 'register_user', methods: ['POST'])]
-    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): JsonResponse
+    #[Route('/register', name: 'register_user', methods: ['POST'])]
+    public function registerUser(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
         if (!$data || !isset($data['email']) || !isset($data['password'])) {
