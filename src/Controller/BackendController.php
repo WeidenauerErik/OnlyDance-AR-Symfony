@@ -70,49 +70,60 @@ final class BackendController extends AbstractController
         return new JsonResponse($data);
     }
 
-    #[Route('/checkUser/{email}/{password}', name: 'check_user', methods: ['GET'])]
-    public function checkUser(string $email, string $password, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): JsonResponse {
-        $user = $userRepository->findOneBy(['email' => $email]);
+    #[Route('/api/checkUser', name: 'check_user', methods: ['POST'])]
+    public function checkUser(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        if (!$data || !isset($data['email']) || !isset($data['password'])) {
+            return new JsonResponse(['success' => false, 'error' => 'E-Mail oder Passwort ist leer!'], 400);
+        }
 
-        if (!$user) return new JsonResponse(['success' => false, 'error' => 'User not found'], 404);
+        $email = trim($data['email']);
+        $password = trim($data['password']);
+
+        $user = $userRepository->findOneBy(['email' => $email]);
+        if (!$user) {
+            return new JsonResponse(['success' => false, 'error' => 'E-Mail oder Passwort falsch!'], 404);
+        }
 
         if ($passwordHasher->isPasswordValid($user, $password)) {
             return new JsonResponse([
                 'success' => true,
-                'userId'  => $user->getId(),
-                'email'   => $user->getEmail(),
             ]);
         }
 
-        return new JsonResponse(['success' => false, 'error' => 'Invalid password'], 401);
+        return new JsonResponse(['success' => false, 'error' => 'E-Mail oder Passwort ist falsch!'], 401);
     }
 
-    #[Route('/register', name: 'register_user', methods: ['POST'])]
-    public function register(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher, UserRepository $userRepository): JsonResponse {
+    #[Route('/api/register', name: 'register_user', methods: ['POST'])]
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): JsonResponse
+    {
         $data = json_decode($request->getContent(), true);
+        if (!$data || !isset($data['email']) || !isset($data['password'])) {
+            return new JsonResponse(['success' => false, 'error' => 'E-Mail and password are required'], 400);
+        }
 
-        if (!$data || !isset($data['email'], $data['password'])) return new JsonResponse(['success' => false, 'error' => 'Email and password required'], 400);
+        $email = trim($data['email']);
+        $password = trim($data['password']);
 
-        $email = strtolower(trim($data['email']));
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return new JsonResponse(['success' => false, 'error' => 'Falsches E-Mail Format!'], 400);
+        }
 
-        if ($userRepository->findOneBy(['email' => $email])) return new JsonResponse(['success' => false, 'error' => 'Email already registered'], 409);
-
-        $plainPassword = $data['password'];
+        $existing = $em->getRepository(User::class)->findOneBy(['email' => $email]);
+        if ($existing) {
+            return new JsonResponse(['success' => false, 'error' => 'Benutzer existiert bereits!'], 409);
+        }
 
         $user = new User();
         $user->setEmail($email);
-
-        $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
-        $user->setPassword($hashedPassword);
-        $user->setRoles(['ROLE_USER']);
+        $user->setPassword($passwordHasher->hashPassword($user, $password));
 
         $em->persist($user);
         $em->flush();
 
         return new JsonResponse([
             'success' => true,
-            'message' => 'User registered successfully',
-            'userId'  => $user->getId()
-        ], 201);
+        ]);
     }
 }
