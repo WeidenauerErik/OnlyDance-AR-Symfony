@@ -21,14 +21,12 @@ final class BackendController extends AbstractController
     {
         $dances = $danceRepository->findBy([], ['id' => 'ASC'], 5);
 
-        $data = array_map(function ($dance) {
-            return [
-                'id' => $dance->getId(),
-                'name' => $dance->getName(),
-            ];
-        }, $dances);
+        $data = array_map(fn($dance) => [
+            'id' => $dance->getId(),
+            'name' => $dance->getName(),
+        ], $dances);
 
-        return new JsonResponse($data);
+        return new JsonResponse($data, 200);
     }
 
     #[Route('/getAllDances', name: 'app_mainMenu_getAllDances', methods: ['GET'])]
@@ -36,78 +34,94 @@ final class BackendController extends AbstractController
     {
         $dances = $danceRepository->findAll();
 
-        $data = array_map(function ($dance) {
-            return [
-                'id' => $dance->getId(),
-                'name' => $dance->getName(),
-            ];
-        }, $dances);
+        $data = array_map(fn($dance) => [
+            'id' => $dance->getId(),
+            'name' => $dance->getName(),
+        ], $dances);
 
-        return new JsonResponse($data);
+        return new JsonResponse($data, 200);
     }
 
     #[Route('/getDanceById/{danceId}', name: 'dance_animator_getDanceById', methods: ['GET'])]
     public function getDanceById(int $danceId, StepsRepository $stepsRepository): JsonResponse
     {
+        if ($danceId <= 0) {
+            return new JsonResponse(['success' => false, 'error' => 'Ungültige Dance-ID!'], 400);
+        }
+
         $steps = $stepsRepository->findBy(['dance_id' => $danceId]);
 
-        $data = array_map(function ($step) {
-            return [
-                'id' => $step->getId(),
-                'm1_x' => $step->getM1X(),
-                'm1_y' => $step->getM1Y(),
-                'm1_toe' => $step->isM1Toe(),
-                'm1_heel' => $step->isM1Heel(),
-                'm1_rotate' => $step->getM1Rotate(),
-                'm2_x' => $step->getM2X(),
-                'm2_y' => $step->getM2Y(),
-                'm2_toe' => $step->isM2Toe(),
-                'm2_heel' => $step->isM2Heel(),
-                'm2_rotate' => $step->getM2Rotate(),
-            ];
-        }, $steps);
+        if (!$steps) {
+            return new JsonResponse(['success' => false, 'error' => 'Keine Schritte für diesen Tanz gefunden!'], 404);
+        }
 
-        return new JsonResponse($data);
+        $data = array_map(fn($step) => [
+            'id' => $step->getId(),
+            'm1_x' => $step->getM1X(),
+            'm1_y' => $step->getM1Y(),
+            'm1_toe' => $step->isM1Toe(),
+            'm1_heel' => $step->isM1Heel(),
+            'm1_rotate' => $step->getM1Rotate(),
+            'm2_x' => $step->getM2X(),
+            'm2_y' => $step->getM2Y(),
+            'm2_toe' => $step->isM2Toe(),
+            'm2_heel' => $step->isM2Heel(),
+            'm2_rotate' => $step->getM2Rotate(),
+        ], $steps);
+
+        return new JsonResponse(['success' => true, 'data' => $data], 200);
     }
 
     #[Route('/login', name: 'login_user', methods: ['POST'])]
     public function loginUser(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        if (!$data || !isset($data['email']) || !isset($data['password'])) {
-            return new JsonResponse(['success' => false, 'error' => 'E-Mail oder Passwort ist leer!'], 400);
+
+        if (!$data || empty($data['email']) || empty($data['password'])) {
+            return new JsonResponse(['success' => false, 'error' => 'E-Mail oder Passwort fehlt!'], 400);
         }
 
-        $email = trim($data['email']);
+        $email = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
         $password = trim($data['password']);
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return new JsonResponse(['success' => false, 'error' => 'Ungültiges E-Mail-Format!'], 400);
+        }
 
         $user = $userRepository->findOneBy(['email' => $email]);
         if (!$user) {
-            return new JsonResponse(['success' => false, 'error' => 'E-Mail oder Passwort falsch!'], 404);
+            return new JsonResponse(['success' => false, 'error' => 'E-Mail oder Passwort ist falsch!'], 401);
         }
 
-        if ($passwordHasher->isPasswordValid($user, $password)) {
-            return new JsonResponse([
-                'success' => true,
-            ]);
+        if (!$passwordHasher->isPasswordValid($user, $password)) {
+            return new JsonResponse(['success' => false, 'error' => 'E-Mail oder Passwort ist falsch!'], 401);
         }
 
-        return new JsonResponse(['success' => false, 'error' => 'E-Mail oder Passwort ist falsch!'], 401);
+        return new JsonResponse([
+            'success' => true,
+            'message' => 'Login erfolgreich!',
+            'password' => $user->getPassword(),
+        ], 200);
     }
 
     #[Route('/register', name: 'register_user', methods: ['POST'])]
     public function registerUser(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        if (!$data || !isset($data['email']) || !isset($data['password'])) {
-            return new JsonResponse(['success' => false, 'error' => 'E-Mail and password are required'], 400);
+
+        if (!$data || empty($data['email']) || empty($data['password'])) {
+            return new JsonResponse(['success' => false, 'error' => 'E-Mail und Passwort sind erforderlich!'], 400);
         }
 
-        $email = trim($data['email']);
+        $email = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
         $password = trim($data['password']);
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            return new JsonResponse(['success' => false, 'error' => 'Falsches E-Mail Format!'], 400);
+            return new JsonResponse(['success' => false, 'error' => 'Ungültiges E-Mail-Format!'], 400);
+        }
+
+        if (strlen($password) < 6) {
+            return new JsonResponse(['success' => false, 'error' => 'Passwort muss mindestens 6 Zeichen lang sein!'], 400);
         }
 
         $existing = $em->getRepository(User::class)->findOneBy(['email' => $email]);
@@ -124,6 +138,39 @@ final class BackendController extends AbstractController
 
         return new JsonResponse([
             'success' => true,
-        ]);
+            'message' => 'Benutzer erfolgreich registriert!',
+            'password' => $user->getPassword(),
+        ], 201);
+    }
+
+    #[Route('/checkUser', name: 'check_user', methods: ['POST'])]
+    public function checkUser(Request $request, UserRepository $userRepository): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+
+        if (!$data || empty($data['email']) || empty($data['hashedPassword'])) {
+            return new JsonResponse(['success' => false, 'error' => 'E-Mail oder Passwort fehlt!'], 400);
+        }
+
+        $email = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
+        $hashedPassword = trim($data['hashedPassword']);
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return new JsonResponse(['success' => false, 'error' => 'Ungültiges E-Mail-Format!'], 400);
+        }
+
+        $user = $userRepository->findOneBy(['email' => $email]);
+        if (!$user) {
+            return new JsonResponse(['success' => false, 'error' => 'Benutzer nicht gefunden!'], 404);
+        }
+
+        if (!password_verify($hashedPassword, $user->getPassword()) && $user->getPassword() !== $hashedPassword) {
+            return new JsonResponse(['success' => false, 'error' => 'Falsches Passwort!'], 401);
+        }
+
+        return new JsonResponse([
+            'success' => true,
+            'message' => 'Benutzer erfolgreich verifiziert!',
+        ], 200);
     }
 }
