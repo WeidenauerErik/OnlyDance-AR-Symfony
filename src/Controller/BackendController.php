@@ -148,12 +148,12 @@ final class BackendController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        if (!$data || empty($data['email']) || empty($data['hashedPassword'])) {
+        if (!$data || empty($data['email']) || empty($data['password'])) {
             return new JsonResponse(['success' => false, 'error' => 'E-Mail oder Passwort fehlt!'], 400);
         }
 
         $email = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
-        $hashedPassword = trim($data['hashedPassword']);
+        $password = trim($data['password']);
 
         if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
             return new JsonResponse(['success' => false, 'error' => 'Ungültiges E-Mail-Format!'], 400);
@@ -164,7 +164,7 @@ final class BackendController extends AbstractController
             return new JsonResponse(['success' => false, 'error' => 'Benutzer nicht gefunden!'], 404);
         }
 
-        if (!password_verify($hashedPassword, $user->getPassword()) && $user->getPassword() !== $hashedPassword) {
+        if (!password_verify($password, $user->getPassword()) && $user->getPassword() !== $password) {
             return new JsonResponse(['success' => false, 'error' => 'Falsches Passwort!'], 401);
         }
 
