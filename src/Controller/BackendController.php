@@ -173,4 +173,13 @@ final class BackendController extends AbstractController
             'message' => 'Benutzer erfolgreich verifiziert!',
         ], 200);
     }
+
+    #[Route('/testConnection', name: 'test_connection', methods: ['POST', 'GET'])]
+    public function testConnection(): JsonResponse
+    {
+        return new JsonResponse([
+            'success' => true,
+            'message' => 'Verbindung funktioniert!',
+        ]);
+    }
 }
