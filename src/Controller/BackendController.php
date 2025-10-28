@@ -174,12 +174,43 @@ final class BackendController extends AbstractController
         ], 200);
     }
 
-    #[Route('/testConnection', name: 'test_connection', methods: ['POST', 'GET'])]
-    public function testConnection(): JsonResponse
-    {
+    #[Route('/changePassword', name: 'change_user_password', methods: ['POST'])]
+    public function changePassword(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+
+        if (!$data || empty($data['email']) || empty($data['oldPassword']) || empty($data['newPassword'])) {
+            return new JsonResponse(['success' => false, 'error' => 'E-Mail, altes Passwort und neues Passwort sind erforderlich!'], 400);
+        }
+
+        $email = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
+        $oldPassword = trim($data['oldPassword']);
+        $newPassword = trim($data['newPassword']);
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return new JsonResponse(['success' => false, 'error' => 'Ungültiges E-Mail-Format!'], 400);
+        }
+
+        $user = $userRepository->findOneBy(['email' => $email]);
+        if (!$user) {
+            return new JsonResponse(['success' => false, 'error' => 'Benutzer nicht gefunden!'], 404);
+        }
+
+        if (!$passwordHasher->isPasswordValid($user, $oldPassword)) {
+            return new JsonResponse(['success' => false, 'error' => 'Altes Passwort ist falsch!'], 401);
+        }
+
+        if (strlen($newPassword) < 6) {
+            return new JsonResponse(['success' => false, 'error' => 'Neues Passwort muss mindestens 6 Zeichen lang sein!'], 400);
+        }
+
+        $hashedNewPassword = $passwordHasher->hashPassword($user, $newPassword);
+        $user->setPassword($hashedNewPassword);
+        $em->flush();
+
         return new JsonResponse([
             'success' => true,
-            'message' => 'Verbindung funktioniert!',
-        ]);
+            'message' => 'Passwort erfolgreich geändert!'
+        ], 200);
     }
+
 }
