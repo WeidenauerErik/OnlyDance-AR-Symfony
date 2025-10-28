@@ -213,4 +213,37 @@ final class BackendController extends AbstractController
         ], 200);
     }
 
+    #[Route('/deleteAccount', name: 'delete_user_account', methods: ['POST'])]
+    public function deleteAccount(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $em): JsonResponse {
+        $data = json_decode($request->getContent(), true);
+
+        if (!$data || empty($data['email']) || empty($data['password'])) {
+            return new JsonResponse(['success' => false, 'error' => 'E-Mail und Passwort sind erforderlich!'], 400);
+        }
+
+        $email = filter_var(trim($data['email']), FILTER_SANITIZE_EMAIL);
+        $password = trim($data['password']);
+
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return new JsonResponse(['success' => false, 'error' => 'Ungültiges E-Mail-Format!'], 400);
+        }
+
+        $user = $userRepository->findOneBy(['email' => $email]);
+        if (!$user) {
+            return new JsonResponse(['success' => false, 'error' => 'Benutzer nicht gefunden!'], 404);
+        }
+
+        if (!$passwordHasher->isPasswordValid($user, $password)) {
+            return new JsonResponse(['success' => false, 'error' => 'Falsches Passwort!'], 401);
+        }
+
+        $em->remove($user);
+        $em->flush();
+
+        return new JsonResponse([
+            'success' => true,
+            'message' => 'Dein Konto wurde erfolgreich gelöscht!'
+        ], 200);
+    }
+
 }
