@@ -17,6 +17,7 @@ jobs:
         run: |
           echo "Replacing frankenphp/Caddyfile with frankenphp/Caddyfile_prod..."
           mv frankenphp/Caddyfile_prod frankenphp/Caddyfile
+          cat frankenphp/Caddyfile
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
