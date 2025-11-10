@@ -43,15 +43,12 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
-            echo "Logging into Docker Hub..."
-            docker login -u erikweidenauer -p ${{ secrets.DOCKER_PASSWORD }}
-
-            echo "Pulling latest image..."
+            echo "Pulling latest PHP image..."
             docker pull erikweidenauer/onlydance-ar-symfony:latest
 
-            echo "Restarting containers..."
-            docker compose down
-            docker compose up -d
+            echo "Deploying stack..."
+            docker compose -f compose.yaml down
+            docker compose -f compose.yaml up -d
 
             echo "Cleaning up old images..."
             docker image prune -f
