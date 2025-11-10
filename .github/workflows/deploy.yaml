@@ -16,7 +16,7 @@ jobs:
       - name: Replace Caddyfile with production version
         run: |
           echo "Replacing frankenphp/Caddyfile with frankenphp/Caddyfile_prod..."
-          mv frankenphp/Caddyfile_prod frankenphp/CaddyFile
+          mv frankenphp/Caddyfile_prod frankenphp/Caddyfile
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
