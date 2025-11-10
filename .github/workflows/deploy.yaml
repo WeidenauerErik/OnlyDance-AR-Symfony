@@ -24,7 +24,7 @@ jobs:
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_USERNAME }}
+          username: erikweidenauer
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build and push production image
@@ -34,22 +34,20 @@ jobs:
           file: ./Dockerfile
           target: frankenphp_prod
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/onlydance-ar-symfony:latest
-          cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/onlydance-ar-symfony:cache
-          cache-to: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/onlydance-ar-symfony:cache,mode=max
+          tags: erikweidenauer/onlydance-ar-symfony:latest
 
       - name: SSH into server and deploy
         uses: appleboy/ssh-action@v1.1.0
         with:
-          host: ${{ secrets.SERVER_HOST }}
+          host: onlydance.at
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
             echo "Logging into Docker Hub..."
-            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+            docker login -u erikweidenauer -p ${{ secrets.DOCKER_PASSWORD }}
 
             echo "Pulling latest image..."
-            docker pull ${{ secrets.DOCKER_USERNAME }}/onlydance-ar-symfony:latest
+            docker pull erikweidenauer/onlydance-ar-symfony:latest
 
             echo "Restarting containers..."
             docker compose down
