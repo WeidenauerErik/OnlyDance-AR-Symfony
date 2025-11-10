@@ -81,7 +81,7 @@ RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
 COPY --link frankenphp/conf.d/20-app.prod.ini $PHP_INI_DIR/app.conf.d/
 
-COPY --link Caddyfile /etc/frankenphp/Caddyfile_prod
+COPY --link Caddyfile /frankenphp/Caddyfile_prod
 
 
 # prevent the reinstallation of vendors at every changes in the source code
