@@ -33,6 +33,7 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/symfony-app:latest
+          no-cache: true
 
       - name: SSH into server and deploy
         uses: appleboy/ssh-action@v1.1.0
