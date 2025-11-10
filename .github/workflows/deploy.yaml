@@ -27,7 +27,6 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-            # Docker Image bauen & pushen (Production Target)
       - name: Build and push production image
         uses: docker/build-push-action@v5
         with:
@@ -46,6 +45,15 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASSWORD }}
           script: |
+            echo "Logging into Docker Hub..."
+            docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+            echo "Pulling latest image..."
             docker pull ${{ secrets.DOCKER_USERNAME }}/onlydance-ar-symfony:latest
+
+            echo "Restarting containers..."
             docker compose down
             docker compose up -d
+
+            echo "Cleaning up old images..."
+            docker image prune -f
