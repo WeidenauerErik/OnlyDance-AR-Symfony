@@ -1,7 +1,7 @@
 ---
 services:
   php:
-    image: ${IMAGES_PREFIX:-}app-php
+    image: erikweidenauer/onlydance-ar-symfony:latest
     restart: unless-stopped
     environment:
       SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
