@@ -79,20 +79,20 @@ ENV APP_ENV=prod
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
 
-COPY --link composer.json composer.lock ./
+COPY --link frankenphp/conf.d/20-app.prod.ini $PHP_INI_DIR/app.conf.d/
 
-# Composer Dependencies
-RUN composer install --no-dev --optimize-autoloader --classmap-authoritative
+# prevent the reinstallation of vendors at every changes in the source code
+COPY --link composer.* symfony.* ./
+RUN set -eux; \
+	composer install --no-cache --prefer-dist --no-dev --no-autoloader --no-scripts --no-progress
 
-# Copy Symfony sources AFTER vendor install
+# copy sources
 COPY --link . ./
+RUN rm -Rf frankenphp/
 
-# Optional: Berechtigungen setzen
-RUN chown -R www-data:www-data /app/var /app/vendor
-
-# Cache generieren, Autoloader dump
-RUN composer dump-autoload --optimize --classmap-authoritative \
- && php bin/console cache:clear --env=prod --no-debug \
- && php bin/console cache:warmup --env=prod
-
-RUN chmod +x bin/console
+RUN set -eux; \
+	mkdir -p var/cache var/log; \
+	composer dump-autoload --classmap-authoritative --no-dev; \
+	composer dump-env prod; \
+	composer run-script --no-dev post-install-cmd; \
+	chmod +x bin/console; sync;

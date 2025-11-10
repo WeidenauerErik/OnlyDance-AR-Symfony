@@ -33,7 +33,7 @@ jobs:
         with:
           context: .
           file: ./Dockerfile
-          target: frankenphp_prod
+          target: frankenphp_dev
           push: true
           tags: erikweidenauer/onlydance-ar-symfony:latest
 
