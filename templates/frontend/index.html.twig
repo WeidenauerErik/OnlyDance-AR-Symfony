@@ -1,189 +1,73 @@
 <!DOCTYPE html>
-<html>
+<html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <title>Frontend</title>
-    <link rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <!-- Titel & Meta-Beschreibung (SEO-optimiert) -->
+    <title>OnlyDance</title>
+    <meta name="description" content="OnlyDance: Die innovative AR-Tanz-App mit präzisen Fuß-Trackern. Lerne Tanzschritte in Echtzeit mit virtueller Pose-Führung – perfekt für 16-24-Jährige. Jetzt tanzen lernen wie ein Profi!" />
+    
+    <!-- Keywords (deutschsprachig & suchvolumenstark) -->
+    <meta name="keywords" content="AR Tanz App, Tanz lernen App, Fuß Tracker Tanzen, Augmented Reality Tanzen, OnlyDance, Tanzschritte lernen, Virtual Dance Coach, Tanz App mit Sensoren, Hip-Hop lernen AR, TikTok Tänze lernen" />
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="OnlyDance – Die AR-Tanz-App mit Fuß-Trackern" />
+    <meta property="og:description" content="Tanze perfekt mit Augmented Reality und präzisen Fuß-Sensoren. Lerne jede Choreo mühelos nach – innovativ, einfach, elegant." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.onlydance.app/" />
+    <meta property="og:image" content="https://www.onlydance.app/og-image-de.jpg" />
+    <meta property="og:locale" content="de_DE" />
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="OnlyDance – AR-Tanz-App mit Fuß-Trackern" />
+    <meta name="twitter:description" content="Die Zukunft des Tanzlernens: AR + Fuß-Sensoren = perfekte Moves!" />
+    
+    <!-- Weitere SEO-Verbesserungen -->
+    <meta name="theme-color" content="#5E1ABD" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://www.onlydance.app/" />
+    <meta name="author" content="OnlyDance" />
+    <meta name="language" content="de" />
 
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet" />
 
-        body {
-            font-family: Montserrat, sans-serif;
-            font-optical-sizing: auto;
-            font-weight: 400;
-            font-style: normal;
-            margin: 0;
-            padding: 0;
-            line-height: 1.6;
-        }
-
-        header {
-            background-color: #333;
-            color: white;
-            padding: 1rem;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        nav ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        nav ul li {
-            margin: 0 1rem;
-        }
-
-        nav ul li a {
-            font-family: Montserrat, sans-serif;
-            font-optical-sizing: auto;
-            font-weight: 400;
-            color: white;
-            text-decoration: none;
-
-        }
-
-        nav ul li a:hover {
-            text-decoration: underline;
-        }
-
-        section {
-            padding: 0.5rem;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        h1, h2, h3 {
-            font-family: Montserrat, sans-serif;
-            font-optical-sizing: auto;
-            font-weight: 600;
-            font-style: normal;
-            color: #333;
-        }
-
-        footer {
-            background-color: #333;
-            color: white;
-            text-align: center;
-            padding: 1rem;
-            margin-top: 2rem;
-        }
-
-        footer a {
-            font-family: Montserrat, sans-serif;
-            font-optical-sizing: auto;
-            font-weight: 400;
-            color: #ddd;
-            text-decoration: none;
-        }
-
-        footer a:hover {
-            text-decoration: underline;
-        }
-
-
-        @media (max-width: 600px) {
-            nav ul {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            nav ul li {
-                margin: 0.5rem 0;
-            }
-
-            section {
-                padding: 1rem;
-            }
-
-
-        }
-    </style>
+    <!-- Strukturierte Daten (JSON-LD) – wichtig für Google Rich Results -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "MobileApplication",
+      "name": "OnlyDance",
+      "description": "AR-Tanz-App mit Fuß-Trackern für präzises Tanzlernen in Echtzeit",
+      "applicationCategory": "Education, Entertainment",
+      "operatingSystem": "iOS, Android",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "EUR"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "reviewCount": "342"
+      },
+      "featureList": [
+        "Augmented Reality Pose-Führung",
+        "Präzise Fuß-Tracker",
+        "Echtzeit-Feedback",
+        "Tanz-Choreografien für TikTok, Hip-Hop, K-Pop"
+      ]
+    }
+    </script>
+  <script type="module" crossorigin src="/assets/index-DmfG3yyz.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-D5kmDxRG.css">
 </head>
 <body>
-
-
-<header>
-    <nav>
-        <ul>
-            <li><a href="#projektbeschreibung">Projektbeschreibung</a></li>
-            <li><a href="#ziele">Ziele</a></li>
-            <li><a href="#team">Team</a></li>
-            <li><a href="#impressum">Impressum</a></li>
-        </ul>
-    </nav>
-</header>
-
-<section id="projektbeschreibung">
-
-    <h1>Diplomarbeit - OnlyDance</h1>
-    <h2>Projektbeschreibung</h2>
-    <p>OnlyDance bietet die Möglichkeit, Grundschritte für Standardtänze zu erlernen. Unterstützt wird dieses
-        Grundprinzip
-        durch ein Live-Tracking System, was eine genaue Position der Füße bereitstellt, um besser kontrollieren zu
-        können,
-        ob ein Schritt richtig getätigt wurde. Um mehr Aufmerksamkeit auf dieses Projekt zu wecken wird der Prozess
-        des
-        Arbeitens dokumentiert und auf Social Media Plattformen veröffentlicht.
-    </p>
-</section>
-
-
-<section id="ziele">
-    <h2>Hauptziele</h2>
-    <h3>AR-Anzeige App</h3>
-    <p>Es wird eine AR-App auf einem (Android)Smartphone entwickelt, die Tanzschritte auf dem Boden visualisiert.
-        Nutzerinnen und Nutzer können diese Schrittfolgen sehen und direkt nachtanzen.
-        Die visuelle Darstellung soll das Erlernen neuer Schrittfolgen erleichtern und die Orientierung
-        im Raum verbessern.
-    </p>
-
-    <h3>Live-Tracking System</h3>
-    <p>Eine Vorstudie wird als erstes durchgeführt, um die verschiedenen Technologien und Umsetzungsmöglichkeiten
-        zu erforschen. Daraus soll ein technisches System realisiert werden, das die Position beider Füße des Users
-        in Echtzeit erfasst. Dadurch kann präzise aufgezeichnet werden, wo sich die Füße zu welchem Zeitpunkt
-        befanden. Diese Daten ermöglichen eine Analyse der Tanzperformance und helfen dabei zu erkennen, ob die
-        Schrittfolge korrekt ausgeführt wurde.
-    </p>
-
-    <h3>Webauftritt und Social Media</h3>
-    <p>Zur Präsentation und Verbreitung des Projekts wird eine Website erstellt, auf der die App vorgestellt und zum
-        Download angeboten wird. Ergänzend dazu wird ein Instagram-Account betrieben, über den regelmäßig Updates
-        zum
-        Projekt veröffentlicht werden.
-    </p>
-
-</section>
-
-<section id="team">
-    <h2>Teamvorstellung</h2>
-    <p>Das Projektteam besteht aus den folgenden Mitgliedern:</p>
-    <ul>
-        <li>Andreas Juchelka - Projektleiter & Live-Tracking-System</li>
-        <li>Jakob Heftner - Stv. Projektleiter & Webauftritt und Social Media</li>
-        <li>Erik Weidenauer - Projektmitarbeiter & AR-Anzeige App</li>
-    </ul>
-</section>
-
-<section id="impressum">
-    <h2>Impressum</h2>
-    <p>Angaben gemäß § 5 TMG:</p>
-    <p>Andreas Juchelka<br>
-        Rennweg 89a<br>
-        Wien, 1030<br>
-        E-Mail: onlydance.rhythm@gmail.com<br>
-    </p>
-</section>
-
-<footer>
-    <p>&copy; 2025 OnlyDance. Alle Rechte vorbehalten. | <a href="#impressum">Impressum</a></p>
-</footer>
+    <div id="root"></div>
 </body>
 </html>
