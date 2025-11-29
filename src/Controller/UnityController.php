@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('api')]
-final class BackendController extends AbstractController
+final class UnityController extends AbstractController
 {
     #[Route('/getFiveDances', name: 'app_mainMenu_getFiveDances', methods: ['GET'])]
     public function getFiveDances(DanceRepository $danceRepository): JsonResponse

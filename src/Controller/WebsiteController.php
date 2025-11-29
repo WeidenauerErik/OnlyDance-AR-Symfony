@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-final class FrontendController extends AbstractController
+final class WebsiteController extends AbstractController
 {
     #[Route('/', name: 'app_frontend')]
     public function index(): Response
