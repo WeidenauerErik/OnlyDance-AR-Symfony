@@ -27,6 +27,9 @@ class Dance
     #[ORM\OneToMany(targetEntity: Steps::class, mappedBy: 'dance_id')]
     private Collection $steps;
 
+    #[ORM\ManyToOne(inversedBy: 'dances')]
+    private ?User $owner = null;
+
     public function __construct()
     {
         $this->steps = new ArrayCollection();
@@ -87,6 +90,18 @@ class Dance
                 $step->setDanceId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): static
+    {
+        $this->owner = $owner;
 
         return $this;
     }

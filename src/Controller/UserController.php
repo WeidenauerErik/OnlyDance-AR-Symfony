@@ -7,8 +7,10 @@ use App\Form\UserType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('dashboard/admin/user')]
@@ -23,13 +25,18 @@ final class UserController extends AbstractController
     }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $user->getPassword());
+            $user->setPassword($hashedPassword);
 
             $entityManager->persist($user);
             $entityManager->flush();
@@ -52,12 +59,19 @@ final class UserController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, User $user, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $plainPassword = $user->getPassword();
+            if ($plainPassword) {
+                $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
+                $user->setPassword($hashedPassword);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
@@ -69,6 +83,7 @@ final class UserController extends AbstractController
         ]);
     }
 
+
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]
     public function delete(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
@@ -78,5 +93,48 @@ final class UserController extends AbstractController
         }
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/toggle/danceschool/{id}', name: 'toggle_danceschool_role')]
+    public function toggleDanceSchoolRole(User $user, EntityManagerInterface $em): RedirectResponse
+    {
+        $roles = $user->getRoles();
+
+        if (in_array('ROLE_DANCESCHOOL', $roles)) {
+            $roles = array_diff($roles, ['ROLE_DANCESCHOOL']);
+        } else {
+            $roles[] = 'ROLE_DANCESCHOOL';
+        }
+
+        $user->setRoles($roles);
+        $em->persist($user);
+        $em->flush();
+
+        return $this->redirectToRoute('app_user_index');
+    }
+
+    #[Route('/toggle/admin/{id}', name: 'toggle_admin_role')]
+    public function toggleAdminRole(User $user, EntityManagerInterface $em): RedirectResponse
+    {
+        $roles = $user->getRoles();
+
+        if (in_array('ROLE_ADMIN', $roles)) {
+            // Rolle entfernen
+            $roles = array_diff($roles, ['ROLE_ADMIN']);
+            $message = 'ROLE_ADMIN wurde entfernt von ' . $user->getEmail();
+        } else {
+            // Rolle hinzufügen
+            $roles[] = 'ROLE_ADMIN';
+            $message = 'ROLE_ADMIN wurde hinzugefügt zu ' . $user->getEmail();
+        }
+
+// Keys neu indizieren, damit es ein sauberes numerisches Array wird
+        $roles = array_values($roles);
+
+        $user->setRoles($roles);
+        $em->persist($user);
+        $em->flush();
+
+        return $this->redirectToRoute('app_user_index');
     }
 }

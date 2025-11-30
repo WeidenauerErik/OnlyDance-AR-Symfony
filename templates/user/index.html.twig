@@ -3,30 +3,52 @@
 {% block title %}User index{% endblock %}
 
 {% block body %}
-    <h1>User index</h1>
+    <h1>User</h1>
     <a href="{{ path('admin_dashboard')}}">Back To Menu</a>
     <table class="table">
         <thead>
-            <tr>
-                <th>Id</th>
-                <th>Email</th>
-                <th>Roles</th>
-                <th>Password</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Roles</th>
+            <th>Password</th>
+            <th>actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for user in users %}
-            <tr>
-                <td>{{ user.id }}</td>
-                <td>{{ user.email }}</td>
-                <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
-                <td>{{ user.password }}</td>
-                <td>
-                    <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
-                </td>
-            </tr>
+            {% if user.id != app.user.id %}
+                <tr>
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.email }}</td>
+                    <td>{{ user.roles ? user.roles|json_encode : '' }}</td>
+                    <td>{{ user.password }}</td>
+                    <td>
+                        <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
+                        <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
+
+                        {% if 'ROLE_DANCESCHOOL' in user.roles %}
+                            <a href="{{ path('toggle_danceschool_role', {'id': user.id}) }}" class="btn btn-warning">
+                                Remove DanceSchool Role
+                            </a>
+                        {% else %}
+                            <a href="{{ path('toggle_danceschool_role', {'id': user.id}) }}" class="btn btn-success">
+                                Make DanceSchool
+                            </a>
+                        {% endif %}
+
+                        {% if 'ROLE_ADMIN' in user.roles %}
+                            <a href="{{ path('toggle_admin_role', {'id': user.id}) }}" class="btn btn-warning">
+                                Remove Admin Role
+                            </a>
+                        {% else %}
+                            <a href="{{ path('toggle_admin_role', {'id': user.id}) }}" class="btn btn-danger">
+                                Make Admin
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endif %}
         {% else %}
             <tr>
                 <td colspan="5">no records found</td>
@@ -36,4 +58,5 @@
     </table>
 
     <a href="{{ path('app_user_new') }}">Create new</a>
+
 {% endblock %}

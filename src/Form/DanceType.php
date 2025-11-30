@@ -3,6 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Dance;
+use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,6 +16,11 @@ class DanceType extends AbstractType
         $builder
             ->add('name')
             ->add('BPM')
+            ->add('owner', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'email',
+                'choice_value' => 'email'
+            ])
         ;
     }
 

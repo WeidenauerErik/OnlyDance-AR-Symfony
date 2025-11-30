@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,6 +33,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, Dance>
+     */
+    #[ORM\OneToMany(targetEntity: Dance::class, mappedBy: 'owner')]
+    private Collection $dances;
+
+    public function __construct()
+    {
+        $this->dances = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -111,5 +124,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function eraseCredentials(): void
     {
         // @deprecated, to be removed when upgrading to Symfony 8
+    }
+
+    /**
+     * @return Collection<int, Dance>
+     */
+    public function getDances(): Collection
+    {
+        return $this->dances;
+    }
+
+    public function addDance(Dance $dance): static
+    {
+        if (!$this->dances->contains($dance)) {
+            $this->dances->add($dance);
+            $dance->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeDance(Dance $dance): static
+    {
+        if ($this->dances->removeElement($dance)) {
+            // set the owning side to null (unless already changed)
+            if ($dance->getOwner() === $this) {
+                $dance->setOwner(null);
+            }
+        }
+
+        return $this;
     }
 }

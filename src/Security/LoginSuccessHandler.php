@@ -23,7 +23,7 @@ class LoginSuccessHandler implements AuthenticationSuccessHandlerInterface
 
         if (in_array('ROLE_ADMIN', $roles)) {
             $redirect = $this->router->generate('admin_dashboard');
-        } else if (in_array('ROLE_DanceSCHOOL', $roles)) {
+        } else if (in_array('ROLE_DANCESCHOOL', $roles)) {
             $redirect = $this->router->generate('danceSchool_dashboard');
         } else {
             $redirect = $this->router->generate('no_rights');
