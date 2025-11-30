@@ -32,7 +32,7 @@ class CreateAdminCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $user = new User();
-        $user->setEmail('admin@onyldance.com');
+        $user->setEmail('admin@onlydance.com');
         $user->setRoles(['ROLE_ADMIN']);
         $user->setPassword($this->hasher->hashPassword($user, 'onlydance'));
 
