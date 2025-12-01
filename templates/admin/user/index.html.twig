@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User index{% endblock %}
+{% block title %}User{% endblock %}
 
 {% block body %}
     <h1>User</h1>
@@ -26,16 +26,6 @@
                     <td>
                         <a href="{{ path('app_user_show', {'id': user.id}) }}">show</a>
                         <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>
-
-                        {% if 'ROLE_DANCESCHOOL' in user.roles %}
-                            <a href="{{ path('toggle_danceschool_role', {'id': user.id}) }}" class="btn btn-warning">
-                                Remove DanceSchool Role
-                            </a>
-                        {% else %}
-                            <a href="{{ path('toggle_danceschool_role', {'id': user.id}) }}" class="btn btn-success">
-                                Make DanceSchool
-                            </a>
-                        {% endif %}
 
                         {% if 'ROLE_ADMIN' in user.roles %}
                             <a href="{{ path('toggle_admin_role', {'id': user.id}) }}" class="btn btn-warning">

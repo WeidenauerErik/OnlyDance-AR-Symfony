@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Dance;
 use App\Form\DanceType;
@@ -17,7 +17,7 @@ final class DanceController extends AbstractController
     #[Route(name: 'app_dance_index', methods: ['GET'])]
     public function index(DanceRepository $danceRepository): Response
     {
-        return $this->render('dance/index.html.twig', [
+        return $this->render('admin/dance/index.html.twig', [
             'dances' => $danceRepository->findAll(),
         ]);
     }
@@ -36,7 +36,7 @@ final class DanceController extends AbstractController
             return $this->redirectToRoute('app_dance_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('dance/new.html.twig', [
+        return $this->render('admin/dance/new.html.twig', [
             'dance' => $dance,
             'form' => $form,
         ]);
@@ -45,7 +45,7 @@ final class DanceController extends AbstractController
     #[Route('/{id}', name: 'app_dance_show', methods: ['GET'])]
     public function show(Dance $dance): Response
     {
-        return $this->render('dance/show.html.twig', [
+        return $this->render('admin/dance/show.html.twig', [
             'dance' => $dance,
         ]);
     }
@@ -62,7 +62,7 @@ final class DanceController extends AbstractController
             return $this->redirectToRoute('app_dance_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('dance/edit.html.twig', [
+        return $this->render('/admin/dance/edit.html.twig', [
             'dance' => $dance,
             'form' => $form,
         ]);

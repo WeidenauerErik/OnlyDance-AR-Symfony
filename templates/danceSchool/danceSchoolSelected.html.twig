@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <a href="{{ path('danceSchool_dashboard') }}">Back To Menu</a>
+    <h1>Choose one to edit!</h1>
+
+    <a href="{{ path('danceschool_users_index', {'schoolId': school.id}) }}">Users</a>
+    <a href="{{ path('danceschool_admin_users_index', {'schoolId': school.id}) }}">Admin Users</a>
+    {#
+    <a href="{{ path('danceschool_dances_index', {'schoolId': school.id}) }}">Dances</a>
+    #}
+{% endblock %}

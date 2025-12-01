@@ -2,6 +2,7 @@
 // src/Controller/AdminController.php
 namespace App\Controller;
 
+use App\Repository\DanceSchoolRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -11,19 +12,31 @@ class DashboardController extends AbstractController
     #[Route('/dashboard/admin', name: 'admin_dashboard')]
     public function adminDashboard(): Response
     {
-        return $this->render('main/admin.html.twig');
+        return $this->render('admin/admin.html.twig');
     }
 
     #[Route('/dashboard/dance_school', name: 'danceSchool_dashboard')]
     public function danceSchoolDashboard(): Response
     {
-        return $this->render('main/danceSchool.html.twig');
+        $user = $this->getUser();
+
+        $adminSchools = $user->getAdminDanceSchools();
+        return $this->render('danceSchool/danceSchool.html.twig', [
+            'adminSchools' => $adminSchools,
+        ]);
     }
 
-    #[Route('/no_rights', name: 'no_rights')]
-    public function noRightsErrorSite(): Response
+    #[Route('/dashboard/dance_school/{id}', name: 'app_danceschool_selected')]
+    public function danceSchoolSelectedDashboard(int $id, DanceSchoolRepository $repo): Response
     {
-        return $this->render('main/noRights.html.twig');
-    }
+        $school = $repo->find($id);
 
+        if (!$school) {
+            throw $this->createNotFoundException("DanceSchool not found");
+        }
+
+        return $this->render('danceSchool/danceSchoolSelected.html.twig', [
+            'school' => $school,
+        ]);
+    }
 }

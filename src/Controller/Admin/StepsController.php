@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Steps;
 use App\Form\StepsType;
@@ -17,7 +17,7 @@ final class StepsController extends AbstractController
     #[Route(name: 'app_steps_index', methods: ['GET'])]
     public function index(StepsRepository $stepsRepository): Response
     {
-        return $this->render('steps/index.html.twig', [
+        return $this->render('admin/steps/index.html.twig', [
             'steps' => $stepsRepository->findAll(),
         ]);
     }
@@ -36,7 +36,7 @@ final class StepsController extends AbstractController
             return $this->redirectToRoute('app_steps_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('steps/new.html.twig', [
+        return $this->render('admin/steps/new.html.twig', [
             'step' => $step,
             'form' => $form,
         ]);
@@ -45,7 +45,7 @@ final class StepsController extends AbstractController
     #[Route('/{id}', name: 'app_steps_show', methods: ['GET'])]
     public function show(Steps $step): Response
     {
-        return $this->render('steps/show.html.twig', [
+        return $this->render('admin/steps/show.html.twig', [
             'step' => $step,
         ]);
     }
@@ -62,7 +62,7 @@ final class StepsController extends AbstractController
             return $this->redirectToRoute('app_steps_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('steps/edit.html.twig', [
+        return $this->render('admin/steps/edit.html.twig', [
             'step' => $step,
             'form' => $form,
         ]);
