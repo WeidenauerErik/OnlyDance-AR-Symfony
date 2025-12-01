@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dances{% endblock %}
+
+{% block body %}
+    <h1>Dances in {{ school.name }}</h1>
+
+    <a href="{{ path('app_danceschool_selected', {'id': school.id}) }}">Back To Menu</a>
+
+    <h2>Existing Dances</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Name</th>
+            <th>BPM</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for dance in dances %}
+            <tr>
+                <td>{{ dance.name }}</td>
+                <td>{{ dance.BPM }}</td>
+                <td>
+                    <form action="{{ path('danceschool_dances_delete', {
+                        schoolId: school.id,
+                        danceId: dance.id
+                    }) }}"
+                          method="POST"
+                          onsubmit="return confirm('Are you sure you want to delete {{ dance.name }}?');">
+
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete_dance_' ~ dance.id) }}">
+
+                        <button type="submit" class="btn">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">No dances found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <hr>
+
+    <h2>Add New Dance (JSON)</h2>
+    <form action="{{ path('danceschool_dances_add', {'schoolId': school.id}) }}" method="POST">
+        <input type="hidden" name="_token" value="{{ csrf_token('add_dance') }}">
+
+        <label for="json">Enter here your Dance-JSON</label>
+        <textarea id="json" name="json" class="form-control" rows="14" required>
+{
+  "name": "Weidi",
+  "BPM": 120,
+  "data": [
+    {
+      "m1_x": -0.2,
+      "m1_y": 0.0,
+      "m1_toe": true,
+      "m1_heel": false,
+      "m1_rotate": 0,
+      "m2_x": 0.2,
+      "m2_y": 0.0,
+      "m2_toe": false,
+      "m2_heel": true,
+      "m2_rotate": 0
+    }
+  ]
+}
+    </textarea>
+
+        <button type="submit" class="btn btn-success mt-3">Add Dance</button>
+    </form>
+
+{% endblock %}
