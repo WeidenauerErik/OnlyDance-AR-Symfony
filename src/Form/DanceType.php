@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Dance;
+use App\Entity\DanceSchool;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -17,9 +18,9 @@ class DanceType extends AbstractType
             ->add('name')
             ->add('BPM')
             ->add('owner', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'email',
-                'choice_value' => 'email'
+                'class' => DanceSchool::class,
+                'choice_label' => 'name',
+                'choice_value' => 'name'
             ])
         ;
     }

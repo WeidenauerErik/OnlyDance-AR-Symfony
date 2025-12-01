@@ -34,15 +34,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    /**
-     * @var Collection<int, Dance>
-     */
-    #[ORM\OneToMany(targetEntity: Dance::class, mappedBy: 'owner')]
-    private Collection $dances;
+    #[ORM\ManyToMany(targetEntity: DanceSchool::class, mappedBy: 'allowedUser')]
+    private Collection $danceSchools;
+
+    #[ORM\ManyToMany(targetEntity: DanceSchool::class, mappedBy: 'allowedAdminUser')]
+    private Collection $adminDanceSchools;
 
     public function __construct()
     {
         $this->dances = new ArrayCollection();
+        $this->danceSchools = new ArrayCollection();
+        $this->adminDanceSchools = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,30 +129,54 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Dance>
+     * @return Collection<int, DanceSchool>
      */
-    public function getDances(): Collection
+    public function getDanceSchools(): Collection
     {
-        return $this->dances;
+        return $this->danceSchools;
     }
 
-    public function addDance(Dance $dance): static
+    public function addDanceSchool(DanceSchool $danceSchool): static
     {
-        if (!$this->dances->contains($dance)) {
-            $this->dances->add($dance);
-            $dance->setOwner($this);
+        if (!$this->danceSchools->contains($danceSchool)) {
+            $this->danceSchools->add($danceSchool);
+            $danceSchool->addAllowedUser($this);
         }
 
         return $this;
     }
 
-    public function removeDance(Dance $dance): static
+    public function removeDanceSchool(DanceSchool $danceSchool): static
     {
-        if ($this->dances->removeElement($dance)) {
-            // set the owning side to null (unless already changed)
-            if ($dance->getOwner() === $this) {
-                $dance->setOwner(null);
-            }
+        if ($this->danceSchools->removeElement($danceSchool)) {
+            $danceSchool->removeAllowedUser($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, DanceSchool>
+     */
+    public function getAdminDanceSchools(): Collection
+    {
+        return $this->adminDanceSchools;
+    }
+
+    public function addAdminDanceSchool(DanceSchool $adminDanceSchool): static
+    {
+        if (!$this->adminDanceSchools->contains($adminDanceSchool)) {
+            $this->adminDanceSchools->add($adminDanceSchool);
+            $adminDanceSchool->addAllowedAdminUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdminDanceSchool(DanceSchool $adminDanceSchool): static
+    {
+        if ($this->adminDanceSchools->removeElement($adminDanceSchool)) {
+            $adminDanceSchool->removeAllowedAdminUser($this);
         }
 
         return $this;

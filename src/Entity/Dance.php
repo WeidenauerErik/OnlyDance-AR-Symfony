@@ -28,7 +28,7 @@ class Dance
     private Collection $steps;
 
     #[ORM\ManyToOne(inversedBy: 'dances')]
-    private ?User $owner = null;
+    private ?DanceSchool $owner = null;
 
     public function __construct()
     {
@@ -94,12 +94,12 @@ class Dance
         return $this;
     }
 
-    public function getOwner(): ?User
+    public function getOwner(): ?DanceSchool
     {
         return $this->owner;
     }
 
-    public function setOwner(?User $owner): static
+    public function setOwner(?DanceSchool $owner): static
     {
         $this->owner = $owner;
 

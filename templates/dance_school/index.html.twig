@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}DanceSchool{% endblock %}
+
+{% block body %}
+    <h1>DanceSchool</h1>
+    <a href="{{ path('admin_dashboard')}}">Back To Menu</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for dance_school in dance_schools %}
+            <tr>
+                <td>{{ dance_school.id }}</td>
+                <td>{{ dance_school.name }}</td>
+                <td>
+                    <a href="{{ path('app_dance_school_show', {'id': dance_school.id}) }}">show</a>
+                    <a href="{{ path('app_dance_school_edit', {'id': dance_school.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_dance_school_new') }}">Create new</a>
+{% endblock %}

@@ -11,6 +11,7 @@
                 <th>Id</th>
                 <th>Name</th>
                 <th>BPM</th>
+                <th>Owner</th>
                 <th>actions</th>
             </tr>
         </thead>
@@ -20,6 +21,7 @@
                 <td>{{ dance.id }}</td>
                 <td>{{ dance.name }}</td>
                 <td>{{ dance.BPM }}</td>
+                <td>{{ dance.owner.name }}</td>
                 <td>
                     <a href="{{ path('app_dance_show', {'id': dance.id}) }}">show</a>
                     <a href="{{ path('app_dance_edit', {'id': dance.id}) }}">edit</a>
