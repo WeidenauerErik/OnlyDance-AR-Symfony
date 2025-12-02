@@ -1,10 +1,6 @@
 <?php
 
 namespace App\Controller\Unity;
-
-use App\Entity\User;
-use App\Repository\DanceRepository;
-use App\Repository\StepsRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,64 +10,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('api')]
-final class UnityController extends AbstractController
+final class UserManageController extends AbstractController
 {
-    #[Route('/getFiveDances', name: 'app_mainMenu_getFiveDances', methods: ['GET'])]
-    public function getFiveDances(DanceRepository $danceRepository): JsonResponse
-    {
-        $dances = $danceRepository->findBy([], ['id' => 'ASC'], 5);
-
-        $data = array_map(fn($dance) => [
-            'id' => $dance->getId(),
-            'name' => $dance->getName(),
-        ], $dances);
-
-        return new JsonResponse($data, 200);
-    }
-
-    #[Route('/getAllDances', name: 'app_mainMenu_getAllDances', methods: ['GET'])]
-    public function getAllDances(DanceRepository $danceRepository): JsonResponse
-    {
-        $dances = $danceRepository->findAll();
-
-        $data = array_map(fn($dance) => [
-            'id' => $dance->getId(),
-            'name' => $dance->getName(),
-        ], $dances);
-
-        return new JsonResponse($data, 200);
-    }
-
-    #[Route('/getDanceById/{danceId}', name: 'dance_animator_getDanceById', methods: ['GET'])]
-    public function getDanceById(int $danceId, StepsRepository $stepsRepository): JsonResponse
-    {
-        if ($danceId <= 0) {
-            return new JsonResponse(['success' => false, 'error' => 'Ungültige Dance-ID!'], 400);
-        }
-
-        $steps = $stepsRepository->findBy(['dance_id' => $danceId]);
-
-        if (!$steps) {
-            return new JsonResponse(['success' => false, 'error' => 'Keine Schritte für diesen Tanz gefunden!'], 404);
-        }
-
-        $data = array_map(fn($step) => [
-            'id' => $step->getId(),
-            'm1_x' => $step->getM1X(),
-            'm1_y' => $step->getM1Y(),
-            'm1_toe' => $step->isM1Toe(),
-            'm1_heel' => $step->isM1Heel(),
-            'm1_rotate' => $step->getM1Rotate(),
-            'm2_x' => $step->getM2X(),
-            'm2_y' => $step->getM2Y(),
-            'm2_toe' => $step->isM2Toe(),
-            'm2_heel' => $step->isM2Heel(),
-            'm2_rotate' => $step->getM2Rotate(),
-        ], $steps);
-
-        return new JsonResponse(['success' => true, 'data' => $data], 200);
-    }
-
     #[Route('/login', name: 'login_user', methods: ['POST'])]
     public function loginUser(Request $request, UserRepository $userRepository, UserPasswordHasherInterface $passwordHasher): JsonResponse
     {
@@ -124,12 +64,12 @@ final class UnityController extends AbstractController
             return new JsonResponse(['success' => false, 'error' => 'Passwort muss mindestens 6 Zeichen lang sein!'], 400);
         }
 
-        $existing = $em->getRepository(User::class)->findOneBy(['email' => $email]);
+        $existing = $em->getRepository(UserManageController::class)->findOneBy(['email' => $email]);
         if ($existing) {
             return new JsonResponse(['success' => false, 'error' => 'Benutzer existiert bereits!'], 409);
         }
 
-        $user = new User();
+        $user = new UserManageController();
         $user->setEmail($email);
         $user->setPassword($passwordHasher->hashPassword($user, $password));
 
