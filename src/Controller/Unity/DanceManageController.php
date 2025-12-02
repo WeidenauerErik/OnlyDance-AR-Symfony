@@ -2,9 +2,11 @@
 
 namespace App\Controller\Unity;
 
+use App\Entity\DanceSchool;
 use App\Repository\DanceRepository;
 use App\Repository\StepsRepository;
 use App\Repository\UserRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -64,18 +66,45 @@ final class DanceManageController extends AbstractController
     }
 
     #[Route('/getUserDanceSchoolsByEmail/{email}', name: 'app_user_getDanceSchoolsByEmail', methods: ['GET'])]
-    public function getUserDanceSchoolsByEmail(string $email, UserRepository $userRepository): JsonResponse
-    {
+    public function getUserDanceSchoolsByEmail(
+        string $email,
+        UserRepository $userRepository,
+        EntityManagerInterface $em
+    ): JsonResponse {
         $user = $userRepository->findOneBy(['email' => $email]);
-        if (!$user) return new JsonResponse(['success' => false, 'error' => 'User nicht gefunden'], 404);
 
-        $danceSchools = $user->getDanceSchools();
+        if (!$user) {
+            return new JsonResponse([
+                'success' => false,
+                'error' => 'User nicht gefunden'
+            ], 404);
+        }
+
+        $danceSchools = $user->getDanceSchools()->toArray();
+        $onlyDance = $em->getRepository(DanceSchool::class)->findOneBy(['name' => 'OnlyDance']);
+
+        if ($onlyDance) {
+            $alreadyExists = false;
+            foreach ($danceSchools as $school) {
+                if ($school->getId() === $onlyDance->getId()) {
+                    $alreadyExists = true;
+                    break;
+                }
+            }
+            if (!$alreadyExists) {
+                $danceSchools[] = $onlyDance;
+            }
+        }
 
         $data = array_map(fn($school) => [
             'id' => $school->getId(),
             'name' => $school->getName(),
-        ], $danceSchools->toArray());
+        ], $danceSchools);
 
-        return new JsonResponse(['success' => true, 'data' => $data], 200);
+        return new JsonResponse([
+            'success' => true,
+            'data' => $data
+        ]);
     }
+
 }

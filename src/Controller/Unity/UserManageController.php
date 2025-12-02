@@ -1,6 +1,9 @@
 <?php
 
 namespace App\Controller\Unity;
+use App\Controller\Admin\UserController;
+use App\Entity\DanceSchool;
+use App\Entity\User;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -64,14 +67,17 @@ final class UserManageController extends AbstractController
             return new JsonResponse(['success' => false, 'error' => 'Passwort muss mindestens 6 Zeichen lang sein!'], 400);
         }
 
-        $existing = $em->getRepository(UserManageController::class)->findOneBy(['email' => $email]);
+        $existing = $em->getRepository(UserController::class)->findOneBy(['email' => $email]);
         if ($existing) {
             return new JsonResponse(['success' => false, 'error' => 'Benutzer existiert bereits!'], 409);
         }
 
-        $user = new UserManageController();
+        $user = new User();
         $user->setEmail($email);
         $user->setPassword($passwordHasher->hashPassword($user, $password));
+
+        $school = $em->getRepository(DanceSchool::class)->findOneBy(['name' => 'OnlyDance']);
+        $user->addDanceSchool($school);
 
         $em->persist($user);
         $em->flush();

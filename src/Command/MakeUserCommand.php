@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Entity\DanceSchool;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -12,7 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[AsCommand(
-    name: 'make:user',
+    name: 'create:user',
     description: 'Create a user or admin account'
 )]
 class MakeUserCommand extends Command
