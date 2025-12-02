@@ -32,12 +32,15 @@ final class DanceManageController extends AbstractController
     {
         $dances = $danceRepository->findBy(['owner' => $danceSchoolId], ['id' => 'ASC']);
 
-        $data = array_map(fn($dance) => [
-            'id' => $dance->getId(),
-            'name' => $dance->getName(),
+        $data = array_map(fn($school) => [
+            'id' => $school->getId(),
+            'name' => $school->getName(),
         ], $dances);
 
-        return new JsonResponse($data, 200);
+        return new JsonResponse([
+            'success' => true,
+            'data' => $data
+        ]);
     }
 
     #[Route('/getDanceById/{danceId}', name: 'dance_animator_getDanceById', methods: ['GET'])]
