@@ -50,7 +50,6 @@ jobs:
             echo "Deploying stack..."
             docker compose -f compose.yaml down
             docker compose -f compose.yaml up -d
-            docker exec -it administrator-php-1 bin/console createAdmin
 
             echo "Cleaning up old images..."
             docker image prune -f
