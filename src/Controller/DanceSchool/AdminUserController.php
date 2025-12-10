@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('dashboard/danceschool/{schoolId}/admin_users')]
+#[Route('/dashboard/danceschool/{schoolId}/admin_users')]
 class AdminUserController extends AbstractController
 {
     #[Route('/', name: 'danceschool_admin_users_index', methods: ['GET'])]
@@ -34,21 +34,15 @@ class AdminUserController extends AbstractController
         $school->removeAllowedAdminUser($user);
         $em->flush();
 
-        return $this->redirectToRoute('danceschool_users_index', ['schoolId' => $schoolId]);
+        return $this->redirectToRoute('danceschool_admin_users_index', ['schoolId' => $schoolId]);
     }
 
     #[Route('/add', name: 'danceschool_admin_users_add', methods: ['POST'])]
-    public function addAdmin(
-        int $schoolId,
-        Request $request,
-        DanceSchoolRepository $repo,
-        UserRepository $userRepo,
-        EntityManagerInterface $em
-    ): Response
+    public function addAdmin(int $schoolId, Request $request, DanceSchoolRepository $repo, UserRepository $userRepo, EntityManagerInterface $em): Response
     {
         $school = $repo->find($schoolId);
 
-        if (!$this->isCsrfTokenValid('add_admin', $request->request->get('_token'))) {
+        if (!$this->isCsrfTokenValid('add_user', $request->request->get('_token'))) {
             throw $this->createAccessDeniedException('Invalid CSRF token');
         }
 

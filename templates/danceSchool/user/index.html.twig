@@ -3,53 +3,66 @@
 {% block title %}{{ userType }}{% endblock %}
 
 {% block body %}
-    <h1>{{ userType }}</h1>
-    <a href="{{ path('app_danceschool_selected', {'id': school.id}) }}">Back To Menu</a>
+<h1>{{ userType }}</h1>
+<a href="{{ path('app_danceschool_selected', {'id': school.id}) }}">Back To Menu</a>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th>Email</th>
-            <th>Actions</th>
-        </tr>
-        </thead>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Email</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
 
-        <tbody>
-        {% for user in users %}
-            {% if user.id != app.user.id %}
-                <tr>
-                    <td>{{ user.email }}</td>
-                    <td>
+    <tbody>
+    {% for user in users %}
+        {% if user.id != app.user.id %}
+            <tr>
+                <td>{{ user.email }}</td>
+                <td>
+                    {% if userType == "Admin-User" %}
+                        <a href="{{ path('danceschool_admin_users_delete', {
+                            schoolId: school.id,
+                            userId: user.id
+                        }) }}">
+                            Delete admin
+                        </a>
+                    {% else %}
                         <a href="{{ path('danceschool_users_delete', {
                             schoolId: school.id,
                             userId: user.id
                         }) }}">
                             Delete
                         </a>
-                    </td>
-                </tr>
-            {% endif %}
-        {% else %}
-            <tr>
-                <td colspan="2">No users found</td>
+                    {% endif %}
+                </td>
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+        {% endif %}
+    {% else %}
+        <tr>
+            <td colspan="2">No users found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 
-    {% if userType == "Admin-User" %}
+<br>
+<h1>Add {{ userType }} by Email</h1>
+{% if userType == "Admin-User" %}
+<form action="{{ path('danceschool_admin_users_add', {'schoolId': school.id}) }}" method="POST"
+      onsubmit="return confirm('Are you sure you want to make this user an admin?');">
+    {% else %}
+    <form action="{{ path('danceschool_users_add', {'schoolId': school.id}) }}" method="POST"
+          onsubmit="return confirm('Are you sure you want to make this user an admin?');">
+        {% endif %}
+        <input type="hidden" name="_token" value="{{ csrf_token('add_user') }}">
+        <div class="mb-3">
+            <label for="email" class="form-label">User Email</label>
+            <input type="email" name="email" id="email" class="form-control" required>
+        </div>
         <br>
-        <h1>Add Admin-User by Email</h1>
-        <form action="{{ path('danceschool_admin_users_add', {'schoolId': school.id}) }}" method="POST"
-              onsubmit="return confirm('Are you sure you want to make this user an admin?');">
-            <input type="hidden" name="_token" value="{{ csrf_token('add_admin') }}">
-            <div class="mb-3">
-                <label for="email" class="form-label">User Email</label>
-                <input type="email" name="email" id="email" class="form-control" required>
-            </div>
-            <br>
-            <button type="submit" class="btn btn-success">Add Admin</button>
-        </form>
-    {% endif %}
+        <button type="submit" class="btn btn-success">Add</button>
+    </form>
 
-{% endblock %}
+
+    {% endblock %}
