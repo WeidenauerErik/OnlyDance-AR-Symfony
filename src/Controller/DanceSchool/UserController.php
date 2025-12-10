@@ -21,7 +21,10 @@ class UserController extends AbstractController
         return $this->render('danceSchool/user/index.html.twig', [
             'school' => $school,
             'users' => $school->getAllowedUser(),
-            'userType' => 'User'
+            'userType' => 'User',
+            'deleteRoute' => 'danceschool_users_delete',      // Route-Name für Löschen
+            'addRoute' => 'danceschool_users_add',            // Route-Name für Hinzufügen
+            'indexRoute' => 'danceschool_users_index'         // Route-Name für Index
         ]);
     }
 

@@ -21,7 +21,10 @@ class AdminUserController extends AbstractController
         return $this->render('danceSchool/user/index.html.twig', [
             'school' => $school,
             'users' => $school->getAllowedAdminUser(),
-            'userType' => 'Admin-User'
+            'userType' => 'Admin-User',
+            'deleteRoute' => 'danceschool_admin_users_delete', // Route-Name für Löschen
+            'addRoute' => 'danceschool_admin_users_add',       // Route-Name für Hinzufügen
+            'indexRoute' => 'danceschool_admin_users_index'    // Route-Name für Index (falls benötigt)
         ]);
     }
 
