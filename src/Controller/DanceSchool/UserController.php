@@ -22,9 +22,9 @@ class UserController extends AbstractController
             'school' => $school,
             'users' => $school->getAllowedUser(),
             'userType' => 'User',
-            'deleteRoute' => 'danceschool_users_delete',      // Route-Name für Löschen
-            'addRoute' => 'danceschool_users_add',            // Route-Name für Hinzufügen
-            'indexRoute' => 'danceschool_users_index'         // Route-Name für Index
+            'deleteRoute' => 'danceschool_users_delete',
+            'addRoute' => 'danceschool_users_add',
+            'indexRoute' => 'danceschool_users_index'
         ]);
     }
 

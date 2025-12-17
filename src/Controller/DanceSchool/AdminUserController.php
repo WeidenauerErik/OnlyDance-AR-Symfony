@@ -22,9 +22,9 @@ class AdminUserController extends AbstractController
             'school' => $school,
             'users' => $school->getAllowedAdminUser(),
             'userType' => 'Admin-User',
-            'deleteRoute' => 'danceschool_admin_users_delete', // Route-Name für Löschen
-            'addRoute' => 'danceschool_admin_users_add',       // Route-Name für Hinzufügen
-            'indexRoute' => 'danceschool_admin_users_index'    // Route-Name für Index (falls benötigt)
+            'deleteRoute' => 'danceschool_admin_users_delete',
+            'addRoute' => 'danceschool_admin_users_add',
+            'indexRoute' => 'danceschool_admin_users_index'
         ]);
     }
 
