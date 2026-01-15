@@ -67,7 +67,7 @@ final class UserManageController extends AbstractController
             return new JsonResponse(['success' => false, 'error' => 'Passwort muss mindestens 6 Zeichen lang sein!'], 400);
         }
 
-        $existing = $em->getRepository(UserController::class)->findOneBy(['email' => $email]);
+        $existing = $em->getRepository(User::class)->findOneBy(['email' => $email]);
         if ($existing) {
             return new JsonResponse(['success' => false, 'error' => 'Benutzer existiert bereits!'], 409);
         }
