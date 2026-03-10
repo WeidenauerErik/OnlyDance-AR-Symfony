@@ -51,6 +51,8 @@ final class DanceManageController extends AbstractController
 
         if (!$steps) return new JsonResponse(['success' => false, 'error' => 'Keine Schritte für diesen Tanz gefunden!'], 404);
 
+        $steps = $stepsRepository->findBy(['dance_id' => $danceId],['id' => 'ASC']);
+        
         $data = array_map(fn($step) => [
             'id' => $step->getId(),
             'm1_x' => $step->getM1X(),
