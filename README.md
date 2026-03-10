@@ -1,4 +1,4 @@
-# 🎵 OnlyDance — Backend API (Symfony)
+# OnlyDance — Backend API (Symfony)
 
 The **OnlyDance Symfony Backend** provides the server-side logic and data management for the OnlyDance AR ecosystem. It handles user-created dances, authentication, data storage, and acts as the central API layer between the Unity AR client, the Vue web frontend, and the database.
 
@@ -8,21 +8,21 @@ The **OnlyDance Symfony Backend** provides the server-side logic and data manage
 
 ## 🚀 Features
 
-### 💃 Dance Management
+### Dance Management
 - Create, update, delete, and fetch user-created dances
 - Store individual dance steps, metadata, and choreography sequences
 - Full input validation for all dance-related data
 
-### 🌟 Online Dances
+### Online Dances
 - Predefined, classic choreographies created by OnlyDance
 - Read-only endpoints optimized for mobile AR and web clients
 
-### 🔐 Authentication & User Management
+### Authentication & User Management
 - User registration and login
 - Secure password hashing
 - Token-based authentication via **JWT**
 
-### 🔌 RESTful API
+### RESTful API
 - Clean REST structure with consistent JSON request/response format
 - CORS-enabled for Unity AR and Vue web clients
 - Designed for scalability and low latency
