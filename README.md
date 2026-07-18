@@ -1,8 +1,6 @@
-# 🕺 OnlyDance — Backend API (Symfony)
+# 🕺 DanceMaster — Backend API (Symfony)
 
-The **OnlyDance Symfony Backend** provides the server-side logic and data management for the OnlyDance AR ecosystem. It handles user-created dances, authentication, data storage, and acts as the central API layer between the Unity AR client, the Vue web frontend, and the database.
-
-> 🌐 Live: [onlydance.at](https://onlydance.at)
+The **DanceMaster Symfony Backend** provides the server-side logic and data management for the DanceMaster AR ecosystem. It handles user-created dances, authentication, data storage, and acts as the central API layer between the Unity AR client, the Vue web frontend, and the database.
 
 ---
 
@@ -14,7 +12,7 @@ The **OnlyDance Symfony Backend** provides the server-side logic and data manage
 - Full input validation for all dance-related data
 
 ### Online Dances
-- Predefined, classic choreographies created by OnlyDance
+- Predefined, classic choreographies created by DanceMaster
 - Read-only endpoints optimized for mobile AR and web clients
 
 ### Authentication & User Management
@@ -46,7 +44,7 @@ The **OnlyDance Symfony Backend** provides the server-side logic and data manage
 ## 📦 Project Structure
 
 ```
-OnlyDance-AR-Symfony/
+DanceMaster-AR-Symfony/
 ├── src/                   # Application source (Controllers, Entities, Services)
 ├── config/                # Symfony configuration
 ├── migrations/            # Doctrine database migrations
@@ -71,8 +69,8 @@ OnlyDance-AR-Symfony/
 ### Development Setup
 
 ```bash
-git clone https://github.com/WeidenauerErik/OnlyDance-AR-Symfony.git
-cd OnlyDance-AR-Symfony
+git clone https://github.com/WeidenauerErik/DanceMaster-AR-Symfony.git
+cd DanceMaster-AR-Symfony
 
 # Start development environment
 docker compose up -d
@@ -95,8 +93,8 @@ docker compose -f compose.yaml -f compose.prod.yaml up -d
 
 | Repository | Description |
 |---|---|
-| [OnlyDance-AR-Unity](https://github.com/WeidenauerErik/OnlyDance-AR-Unity) | AR mobile client (Unity) |
-| [OnlyDance-WEB-Vue](https://github.com/WeidenauerErik/OnlyDance-WEB-Vue) | Web frontend (Vue 3) |
+| [DanceMaster-AR-Unity](https://github.com/WeidenauerErik/DanceMaster-AR-Unity) | AR mobile client (Unity) |
+| [DanceMaster-WEB-Vue](https://github.com/WeidenauerErik/DanceMaster-WEB-Vue) | Web frontend (Vue 3) |
 
 ---
 
